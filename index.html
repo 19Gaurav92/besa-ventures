@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BESA VENTURES - Gaming Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Gradient Background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #00d9ff 0%, #8b5cf6 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+        }
+
+        /* Diagonal Stripes Overlay */
+        .stripes-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                rgba(255,255,255,0.02) 50px,
+                rgba(255,255,255,0.02) 100px
+            );
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 15, 0.95);
+            border-bottom: 2px solid #8b5cf6;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: -10px;
+            width: 4px;
+            height: 60px;
+            background: repeating-linear-gradient(
+                45deg,
+                #00d9ff,
+                #00d9ff 10px,
+                #8b5cf6 10px,
+                #8b5cf6 20px
+            );
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            padding: 15px 50px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 600px;
+            background: url('https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/besa-gaming-background.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.7);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #00d9ff;
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.8);
+        }
+
+        /* Games Section */
+        .games-section {
+            padding: 80px 50px;
+            background: rgba(10, 10, 15, 0.9);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 50px;
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: rgba(20, 20, 30, 0.8);
+            border: 2px solid #8b5cf6;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+            border-color: #00d9ff;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .game-content {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00d9ff;
+        }
+
+        .game-genre {
+            color: #8b5cf6;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .game-description {
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .play-button {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .play-button:hover {
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 50px;
+            background: rgba(139, 92, 246, 0.1);
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            padding: 50px;
+            border-top: 2px solid #8b5cf6;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #cccccc;
+            line-height: 1.8;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: #00d9ff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            background: rgba(139, 92, 246, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+        }
+
+        .contract-address {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="stripes-overlay"></div>
+
+    <header>
+        <div class="header-top">
+            <div class="logo">BESA VENTURES</div>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Discord</a>
+                <a href="#">Telegram</a>
+            </div>
+        </div>
+        <nav>
+            <a href="#home">HOME</a>
+            <a href="#games">GAMES</a>
+            <a href="#about">ABOUT</a>
+            <a href="#utilities">UTILITIES</a>
+            <a href="#tokenomics">TOKENOMICS</a>
+            <a href="#roadmap">ROADMAP</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>WELCOME TO BESA VENTURES</h1>
+            <p>The Future of Blockchain Gaming</p>
+            <button class="cta-button">START PLAYING</button>
+        </div>
+    </section>
+
+    <section class="games-section" id="games">
+        <h2 class="section-title">OUR GAMES</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/kali-run.jpg" alt="Kali's Run" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Kali's Run</h3>
+                    <p class="game-genre">Action • Adventure</p>
+                    <p class="game-description">Epic endless runner through mystical lands. Collect tokens and power-ups!</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/crypto-match.jpg" alt="Crypto Match" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Crypto Match</h3>
+                    <p class="game-genre">Puzzle • Strategy</p>
+                    <p class="game-description">Match crypto symbols and earn rewards in this addictive puzzle game.</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/gold-rush-racer.jpg" alt="Gold Rush Racer" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Gold Rush Racer</h3>
+                    <p class="game-genre">Racing • Arcade</p>
+                    <p class="game-description">High-speed racing with blockchain rewards. Compete and win!</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/battle-arena.jpg" alt="Battle Arena" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Battle Arena</h3>
+                    <p class="game-genre">Combat • Multiplayer</p>
+                    <p class="game-description">Compete in epic PvP battles and climb the leaderboard.</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/treasure-hunt.jpg" alt="Treasure Hunt" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Treasure Hunt</h3>
+                    <p class="game-genre">Adventure • Exploration</p>
+                    <p class="game-description">Explore dungeons and discover hidden blockchain treasures.</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/space-miner.jpg" alt="Space Miner" class="game-image">
+                <div class="game-content">
+                    <h3 class="game-title">Space Miner</h3>
+                    <p class="game-genre">Strategy • Mining</p>
+                    <p class="game-description">Mine asteroids for crypto resources in deep space.</p>
+                    <button class="play-button">PLAY NOW</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="about">
+        <h2 class="section-title">ABOUT BESA VENTURES</h2>
+        <div class
