@@ -13,24 +13,14 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0f;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Gradient Background */
-        .gradient-bg {
-            background: linear-gradient(135deg, #00d9ff 0%, #8b5cf6 100%);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -2;
-        }
-
         /* Diagonal Stripes Overlay */
-        .stripes-overlay {
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
@@ -40,10 +30,11 @@
                 45deg,
                 transparent,
                 transparent 50px,
-                rgba(255,255,255,0.02) 50px,
-                rgba(255,255,255,0.02) 100px
+                rgba(0, 217, 255, 0.03) 50px,
+                rgba(0, 217, 255, 0.03) 100px
             );
             z-index: -1;
+            pointer-events: none;
         }
 
         /* Header */
@@ -60,28 +51,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 50px;
+            padding: 20px 50px;
             border-bottom: 1px solid rgba(139, 92, 246, 0.3);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             background: linear-gradient(90deg, #00d9ff, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
+            letter-spacing: 2px;
         }
 
         .logo::before {
             content: '';
             position: absolute;
-            left: -20px;
-            top: -10px;
-            width: 4px;
-            height: 60px;
+            left: -25px;
+            top: -5px;
+            width: 5px;
+            height: 50px;
             background: repeating-linear-gradient(
                 45deg,
                 #00d9ff,
@@ -91,108 +83,133 @@
             );
         }
 
+        .social-links-header {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links-header a {
+            background: rgba(139, 92, 246, 0.2);
+            color: #00d9ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .social-links-header a:hover {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         nav {
             display: flex;
             gap: 30px;
             padding: 15px 50px;
+            justify-content: center;
         }
 
         nav a {
             color: #ffffff;
             text-decoration: none;
-            font-weight: 500;
-            padding: 8px 20px;
+            font-weight: 600;
+            padding: 10px 25px;
             border-radius: 5px;
             transition: all 0.3s;
             position: relative;
+            font-size: 15px;
+            letter-spacing: 1px;
         }
 
         nav a:hover {
             background: linear-gradient(90deg, #00d9ff, #8b5cf6);
             box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            transform: translateY(-2px);
         }
 
         /* Hero Section */
         .hero {
-            height: 600px;
-            background: url('https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/besa-gaming-background.jpg') center/cover;
+            height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             position: relative;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 15, 0.7);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 60px;
+        .hero-content h1 {
+            font-size: 72px;
             margin-bottom: 20px;
             text-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6, #00d9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
         }
 
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 30px;
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 30px rgba(0, 217, 255, 0.8); }
+            50% { text-shadow: 0 0 50px rgba(139, 92, 246, 0.8); }
+        }
+
+        .hero-content p {
+            font-size: 28px;
+            margin-bottom: 40px;
             color: #00d9ff;
+            font-weight: 300;
         }
 
         .cta-button {
             background: linear-gradient(90deg, #00d9ff, #8b5cf6);
             color: white;
-            padding: 15px 40px;
+            padding: 18px 50px;
             border: none;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
             transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .cta-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0, 217, 255, 0.8);
+            box-shadow: 0 0 50px rgba(0, 217, 255, 0.8);
         }
 
-        /* Games Section */
-        .games-section {
-            padding: 80px 50px;
-            background: rgba(10, 10, 15, 0.9);
+        /* Section Styling */
+        section {
+            padding: 100px 50px;
         }
 
         .section-title {
             text-align: center;
-            font-size: 42px;
-            margin-bottom: 50px;
+            font-size: 48px;
+            margin-bottom: 60px;
             background: linear-gradient(90deg, #00d9ff, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
+        /* Games Section */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .game-card {
-            background: rgba(20, 20, 30, 0.8);
+            background: rgba(20, 20, 30, 0.6);
             border: 2px solid #8b5cf6;
             border-radius: 15px;
             overflow: hidden;
@@ -206,68 +223,140 @@
             border-color: #00d9ff;
         }
 
-        .game-image {
+        .game-image-placeholder {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
+            height: 220px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            border-bottom: 2px solid #8b5cf6;
         }
 
         .game-content {
-            padding: 20px;
+            padding: 25px;
         }
 
         .game-title {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 10px;
             color: #00d9ff;
+            font-weight: bold;
         }
 
         .game-genre {
             color: #8b5cf6;
-            font-size: 14px;
+            font-size: 15px;
             margin-bottom: 15px;
+            font-weight: 500;
         }
 
         .game-description {
             color: #cccccc;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-size: 15px;
         }
 
         .play-button {
             background: linear-gradient(90deg, #00d9ff, #8b5cf6);
             color: white;
-            padding: 10px 30px;
+            padding: 12px 30px;
             border: none;
             border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .play-button:hover {
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
+            transform: scale(1.02);
         }
 
         /* About Section */
         .about-section {
-            padding: 80px 50px;
-            background: rgba(139, 92, 246, 0.1);
-            text-align: center;
+            background: rgba(139, 92, 246, 0.05);
         }
 
         .about-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            line-height: 2;
+            font-size: 19px;
+            text-align: center;
+            color: #e0e0e0;
+        }
+
+        /* Utilities Section */
+        .utilities-section {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .utilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .utility-card {
+            background: rgba(20, 20, 30, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #00d9ff;
+        }
+
+        .utility-card h3 {
+            color: #00d9ff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .utility-card p {
+            color: #cccccc;
             line-height: 1.8;
-            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .token-address {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.8;
         }
 
         /* Footer */
         footer {
             background: rgba(10, 10, 15, 0.95);
-            padding: 50px;
+            padding: 60px 50px 30px;
             border-top: 2px solid #8b5cf6;
         }
 
@@ -275,63 +364,71 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+            margin-bottom: 30px;
         }
 
         .footer-section h3 {
             color: #00d9ff;
             margin-bottom: 20px;
+            font-size: 22px;
         }
 
         .footer-section p, .footer-section a {
             color: #cccccc;
-            line-height: 1.8;
+            line-height: 2;
             text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
         }
 
         .footer-section a:hover {
             color: #00d9ff;
         }
 
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(139, 92, 246, 0.3);
+            color: #888;
         }
 
-        .social-links a {
-            background: rgba(139, 92, 246, 0.3);
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+            }
 
-        .social-links a:hover {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-        }
+            nav {
+                flex-wrap: wrap;
+                padding: 15px 20px;
+            }
 
-        .contract-address {
-            background: rgba(0, 217, 255, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            word-break: break-all;
-            margin-top: 10px;
+            .hero-content h1 {
+                font-size: 42px;
+            }
+
+            .games-grid,
+            .utilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="gradient-bg"></div>
-    <div class="stripes-overlay"></div>
-
     <header>
         <div class="header-top">
             <div class="logo">BESA VENTURES</div>
-            <div class="social-links">
-                <a href="#">Twitter</a>
-                <a href="#">Discord</a>
-                <a href="#">Telegram</a>
+            <div class="social-links-header">
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Discord</a>
+                <a href="#" target="_blank">Telegram</a>
             </div>
         </div>
         <nav>
@@ -352,71 +449,11 @@
         </div>
     </section>
 
-    <section class="games-section" id="games">
+    <section id="games">
         <h2 class="section-title">OUR GAMES</h2>
         <div class="games-grid">
             <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/kali-run.jpg" alt="Kali's Run" class="game-image">
+                <div class="game-image-placeholder">🏃</div>
                 <div class="game-content">
                     <h3 class="game-title">Kali's Run</h3>
                     <p class="game-genre">Action • Adventure</p>
-                    <p class="game-description">Epic endless runner through mystical lands. Collect tokens and power-ups!</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/crypto-match.jpg" alt="Crypto Match" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Crypto Match</h3>
-                    <p class="game-genre">Puzzle • Strategy</p>
-                    <p class="game-description">Match crypto symbols and earn rewards in this addictive puzzle game.</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/gold-rush-racer.jpg" alt="Gold Rush Racer" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Gold Rush Racer</h3>
-                    <p class="game-genre">Racing • Arcade</p>
-                    <p class="game-description">High-speed racing with blockchain rewards. Compete and win!</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/battle-arena.jpg" alt="Battle Arena" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Battle Arena</h3>
-                    <p class="game-genre">Combat • Multiplayer</p>
-                    <p class="game-description">Compete in epic PvP battles and climb the leaderboard.</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/treasure-hunt.jpg" alt="Treasure Hunt" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Treasure Hunt</h3>
-                    <p class="game-genre">Adventure • Exploration</p>
-                    <p class="game-description">Explore dungeons and discover hidden blockchain treasures.</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="https://raw.githubusercontent.com/19Gaurav92/besa-ventures/main/images/space-miner.jpg" alt="Space Miner" class="game-image">
-                <div class="game-content">
-                    <h3 class="game-title">Space Miner</h3>
-                    <p class="game-genre">Strategy • Mining</p>
-                    <p class="game-description">Mine asteroids for crypto resources in deep space.</p>
-                    <button class="play-button">PLAY NOW</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="about-section" id="about">
-        <h2 class="section-title">ABOUT BESA VENTURES</h2>
-        <div class
