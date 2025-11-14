@@ -16,28 +16,40 @@
       --grad2: #8b5cf6;
       --glass: rgba(255,255,255,0.04);
       --glass-2: rgba(255,255,255,0.03);
-      --neon: rgba(0,217,255,0.12);
+      --neon-weak: rgba(0,217,255,0.06);
+      --neon-strong: rgba(0,217,255,0.18);
       --accent: linear-gradient(135deg,var(--grad1),var(--grad2));
       --card-shadow: 0 8px 30px rgba(139,92,246,0.12), inset 0 -3px 12px rgba(0,0,0,0.6);
       --transition: 250ms cubic-bezier(.2,.9,.3,1);
       color-scheme: dark;
     }
 
-    /* Mobile-first base */
+    /* Reset & base */
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.08), transparent 8%),
-        radial-gradient(900px 500px at 90% 90%, rgba(0,217,255,0.06), transparent 8%),
+        radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.06), transparent 8%),
+        radial-gradient(900px 500px at 90% 90%, rgba(0,217,255,0.04), transparent 8%),
         linear-gradient(180deg, rgba(10,13,20,1) 0%, rgba(7,17,26,1) 100%);
       color:#cfeffd;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      scroll-behavior:smooth;
+      overflow-x:hidden;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Particle canvas under content (z-index layering: canvas 0, stripes 1, content 2) */
+    canvas#particles {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      display:block;
+      pointer-events:none;
+      opacity:0.55;
+      mix-blend-mode:screen;
     }
 
     /* Diagonal stripe overlay for the entire site */
@@ -50,6 +62,38 @@
         transparent 1px, transparent 18px);
       mix-blend-mode:overlay;
       z-index:1;
+    }
+
+    /* Floating triangles container */
+    .triangles {
+      position:fixed;
+      inset:0;
+      z-index:1; /* sits with stripe overlay but behind main content (wrap z-index:2) */
+      pointer-events:none;
+      overflow:visible;
+    }
+    .triangle {
+      position:absolute;
+      width:0;
+      height:0;
+      opacity:0.12;
+      filter:drop-shadow(0 6px 18px rgba(0,217,255,0.06));
+      animation: floatTri linear infinite;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      will-change: transform, opacity;
+    }
+    /* create triangular shapes by border trick; color using transparent borders except one */
+    .triangle.t1 { border-left:18px solid transparent; border-right:18px solid transparent; border-bottom:30px solid rgba(0,217,255,0.12); left:6%; top:10%; animation-duration:9s; animation-delay:0s; }
+    .triangle.t2 { border-left:14px solid transparent; border-right:14px solid transparent; border-bottom:22px solid rgba(139,92,246,0.12); left:82%; top:22%; animation-duration:11s; animation-delay:1s; opacity:0.14; }
+    .triangle.t3 { border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:20px solid rgba(0,217,255,0.08); left:42%; top:62%; animation-duration:13s; animation-delay:0.6s; }
+    .triangle.t4 { border-left:16px solid transparent; border-right:16px solid transparent; border-bottom:28px solid rgba(139,92,246,0.09); left:20%; top:78%; animation-duration:10s; animation-delay:2s; }
+    .triangle.t5 { border-left:20px solid transparent; border-right:20px solid transparent; border-bottom:34px solid rgba(0,217,255,0.10); left:68%; top:6%; animation-duration:14s; animation-delay:3s; }
+
+    @keyframes floatTri {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity:0.12; }
+      50% { transform: translateY(-28px) rotate(12deg) scale(1.06); opacity:0.22; }
+      100% { transform: translateY(0) rotate(0deg) scale(1); opacity:0.12; }
     }
 
     /* Layout */
@@ -76,6 +120,7 @@
       text-decoration:none;
       color:inherit;
     }
+    .logo img.besa-logo{height:45px;border-radius:8px;object-fit:cover;box-shadow:0 8px 26px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
     .logo .mark{
       width:56px;height:40px;position:relative;border-radius:8px;
       background:linear-gradient(135deg,#00000022,rgba(255,255,255,0.02));
@@ -84,21 +129,8 @@
       border:1px solid rgba(255,255,255,0.03);
       overflow:hidden;
     }
-    /* diagonal stripe inside logo mark (left accent) */
-    .logo .mark::before{
-      content:"";
-      position:absolute;
-      left:-18%;
-      top:-20%;
-      width:70%;
-      height:140%;
-      transform:rotate(-20deg);
-      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      box-shadow: 0 4px 18px rgba(0,217,255,0.06);
-      mix-blend-mode:screen;
-    }
     .logo h1{font-family: 'Orbitron', sans-serif;font-weight:700;font-size:14px;margin:0;letter-spacing:0.6px;color:#e8fbff}
-    .logo p{margin:0;font-size:10px;color:#9edfff;opacity:0.85}
+    .logo p{margin:0;font-size:10px;color:#9edfff;opacity:0.95}
 
     nav.primary{
       display:flex;
@@ -177,13 +209,18 @@
       letter-spacing:1.6px;
       color: #eaffff;
       text-transform:uppercase;
-      text-shadow: 0 6px 22px rgba(0,217,255,0.08), 0 2px 8px rgba(139,92,246,0.06);
+      text-shadow:
+        0 6px 28px rgba(0,217,255,0.12),
+        0 2px 10px rgba(139,92,246,0.08);
+      font-style:italic;
+      font-weight:900;
     }
     .hero p.lead{
       margin:12px 0 18px 0;
       font-size:16px;
       color: #cfeffd;
       opacity:0.95;
+      text-shadow: 0 6px 20px rgba(0,217,255,0.04);
     }
     .cta{
       display:inline-flex;
@@ -223,7 +260,7 @@
     .game-card{
       display:flex;
       gap:12px;
-      align-items:flex-start;
+      align-items:center;
       padding:14px;
       border-radius:12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
@@ -231,17 +268,26 @@
       border:1px solid rgba(255,255,255,0.03);
     }
     .game-card:hover{
-      transform:translateY(-8px);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.7), 0 0 30px rgba(0,217,255,0.06);
+      transform:translateY(-10px) scale(1.01);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.75), 0 0 40px rgba(0,217,255,0.06);
     }
-    .game-emoji{
-      min-width:72px;width:72px;height:72px;border-radius:12px;
-      display:flex;align-items:center;justify-content:center;font-size:30px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: inset 0 -6px 14px rgba(0,0,0,0.6);
-      font-size:28px;
+
+    /* circular game image with gradient border */
+    .game-img-wrap{
+      width:72px;height:72px;border-radius:50%;
+      padding:3px; /* acts as border thickness */
+      background: conic-gradient(from 180deg, var(--grad1), var(--grad2));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.6), 0 0 18px rgba(0,217,255,0.04);
+      transition:transform var(--transition), box-shadow var(--transition);
+      flex-shrink:0;
     }
+    .game-img-wrap img{
+      width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;border:3px solid rgba(10,12,14,0.6);
+      background:#051017;
+    }
+    .game-img-wrap:hover { transform: scale(1.06) rotate(-2deg); box-shadow: 0 18px 44px rgba(0,217,255,0.10), 0 0 30px rgba(139,92,246,0.06); }
+
     .game-body{flex:1}
     .game-body h4{margin:0;font-family:'Orbitron',sans-serif;font-size:15px}
     .game-body small{display:block;color:#9edfff;margin-top:4px;font-size:12px}
@@ -257,7 +303,7 @@
     .btn-play:hover{
       background: linear-gradient(90deg,var(--grad1),var(--grad2));
       color:#001219;
-      transform:translateY(-4px) scale(1.02);
+      transform:translateY(-4px) scale(1.03);
       box-shadow:0 12px 30px rgba(0,217,255,0.06);
     }
 
@@ -297,63 +343,17 @@
     }
     .toast.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
 
-    /* humanitarian + donation */
-    .mission-grid{
-      display:grid;gap:12px;
+    /* other sections and footer unchanged but with subtle neon glow */
+    .section h3::after{
+      content:"";
+      display:block;height:6px;width:44px;margin-top:10px;border-radius:6px;background:linear-gradient(90deg,var(--grad1),var(--grad2));
+      box-shadow:0 10px 30px rgba(0,217,255,0.06);
     }
-    .donation-box{
-      padding:14px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(0,217,255,0.02), rgba(139,92,246,0.02));
-      border:1px solid rgba(255,255,255,0.03);
-      display:flex;flex-direction:column;gap:12px;
-      align-items:flex-start;
-    }
-    .wallet{
-      font-family:monospace;padding:10px;border-radius:10px;background:rgba(0,0,0,0.18);
-      width:100%;display:flex;justify-content:space-between;align-items:center;
-      border:1px dashed rgba(255,255,255,0.03);
-    }
-    .donate-btn{
-      padding:12px 16px;border-radius:12px;border:none;cursor:pointer;
-      background:transparent;color:var(--grad1);font-weight:700;
-      border:1px solid rgba(0,217,255,0.08);
-    }
-    .donate-btn:hover{
-      background: linear-gradient(90deg,var(--grad1),var(--grad2));
-      color:#001219;transform:translateY(-4px);
-    }
-
-    /* ecosystem cards */
-    .ecos-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
-    .ecos-card{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:space-between}
-    .tag-coming{padding:6px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
-
-    /* tokenomics */
-    .tokenomics-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
-    .supply{
-      font-family:'Orbitron',sans-serif;font-size:22px;margin:0;color:#eaffff;
-    }
-    .dist-list{display:flex;flex-direction:column;gap:8px}
-    .dist-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
-    .bar{
-      height:10px;border-radius:8px;background:linear-gradient(90deg,var(--grad1),var(--grad2));box-shadow:0 6px 18px rgba(139,92,246,0.08);
-    }
-
-    /* roadmap */
-    .timeline{display:flex;flex-direction:column;gap:14px;margin-top:12px}
-    .phase{
-      display:flex;gap:12px;align-items:flex-start;
-      padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)
-    }
-    .phase .dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(90deg,var(--grad1),var(--grad2));box-shadow:0 6px 20px rgba(0,217,255,0.06)}
-    .phase .meta{font-size:13px}
 
     footer{
       margin-top:28px;padding:18px 0;color:#9edfff;opacity:0.95;border-top:1px solid rgba(255,255,255,0.02);
       display:flex;flex-direction:column;gap:12px;
     }
-    footer .row{display:flex;flex-direction:column;gap:8px}
-    footer .bottom{display:flex;flex-direction:column;gap:12px;align-items:center}
 
     /* responsiveness */
     @media(min-width:700px){
@@ -375,29 +375,30 @@
       .token-row{flex-wrap:nowrap}
     }
 
-    /* little polish for accessibility focus */
+    /* accessibility */
     a:focus, button:focus {outline:2px solid rgba(0,217,255,0.12);outline-offset:2px}
   </style>
 </head>
 <body>
+  <!-- Particle canvas -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- Triangles -->
+  <div class="triangles" aria-hidden="true">
+    <div class="triangle t1"></div>
+    <div class="triangle t2"></div>
+    <div class="triangle t3"></div>
+    <div class="triangle t4"></div>
+    <div class="triangle t5"></div>
+  </div>
+
   <div class="stripe-overlay" aria-hidden="true"></div>
 
   <div class="wrap" id="top">
     <header role="banner" aria-label="Main header">
       <a class="logo" href="#home" onclick="navTo(event,'home')">
-        <div class="mark" aria-hidden="true">
-          <!-- small diagonal accent in the mark -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:translateX(-2px)">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1">
-                <stop offset="0" stop-color="#00d9ff"/>
-                <stop offset="1" stop-color="#8b5cf6"/>
-              </linearGradient>
-            </defs>
-            <rect width="42" height="28" rx="6" fill="#041018"></rect>
-            <path d="M-6 34L26 -10L36 -10L4 34Z" fill="url(#g1)" opacity="0.95"/>
-          </svg>
-        </div>
+        <!-- New Besa logo image as requested -->
+        <img class="besa-logo" src="images/besa ventures logo.jpg" alt="Besa Ventures logo" height="45">
         <div>
           <h1>BESA VENTURES</h1>
           <p>Gaming Ecosystem</p>
@@ -417,22 +418,18 @@
 
       <div class="socials" aria-hidden="false">
         <a class="icon-btn" href="https://www.facebook.com/profile.php?id=100094135254548&mibextid=ZbWKwL" target="_blank" rel="noopener" aria-label="Facebook">
-          <!-- Facebook icon -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.87 6.48 1.87 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.03H7.9v-2.9h2.41V9.2c0-2.39 1.42-3.7 3.59-3.7 1.04 0 2.13.18 2.13.18v2.34h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.9h-2.22V22c4.78-.8 8.44-4.94 8.44-9.93z" fill="currentColor"/></svg>
         </a>
 
         <a class="icon-btn" href="https://www.tiktok.com/@besagamingcompany?_t=8fgHW5bHtyL&_r=1" target="_blank" rel="noopener" aria-label="TikTok">
-          <!-- TikTok icon -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v7.27A4.73 4.73 0 0 1 7.27 14 4.73 4.73 0 0 1 2.5 9.27 4.73 4.73 0 0 1 7.27 4.5H9v7.5A7 7 0 1 0 16 19v-7h-3V2h-1z" fill="currentColor"/></svg>
         </a>
 
         <a class="icon-btn" href="https://www.instagram.com/besaventuresofficial?igsh=MXVidW80OHE0Z2x5dw==" target="_blank" rel="noopener" aria-label="Instagram">
-          <!-- Instagram icon -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.6.6.3 1 .7 1.4 1.4.3.5.5 1.3.6 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.6 2.4-.3.6-.7 1-1.4 1.4-.5.3-1.3.5-2.4.6-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.6-.6-.3-1-.7-1.4-1.4-.3-.5-.5-1.3-.6-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.9.6-2.4.3-.6.7-1 1.4-1.4.5-.3 1.3-.5 2.4-.6C8.4 2.2 8.8 2.2 12 2.2m0-2.2C8.7 0 8.2 0 6.9.1 5.6.1 4.6.3 3.8.7 3 .9 2.4 1.4 1.8 2c1.6 2 1.6 3.7 1.6 9.9s0 7.9-1.6 9.9c.6.6 1.2 1.1 2 1.3.8.4 1.8.6 3.1.6 1.3.1 1.8.1 5.1.1s3.8 0 5.1-.1c1.3-.1 2.3-.3 3.1-.6.8-.2 1.4-.7 2-1.3C22.4 19.8 22.4 18.1 22.4 12s0-7.9 1.6-9.9C23 1.4 22.4.9 21.6.7c-.8-.4-1.8-.6-3.1-.6C15.8 0 15.3 0 12 0z" fill="currentColor"/></svg>
         </a>
 
         <a class="icon-btn" href="https://x.com/besagaming?t=0KOVONzRc74Wim1Y78wPkw&s=09" target="_blank" rel="noopener" aria-label="Twitter/X">
-          <!-- X / Twitter icon -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 5.8c-.6.3-1.3.5-2 .6.7-.4 1.2-1.1 1.5-1.9-.7.4-1.5.7-2.4.9C18.4 4.4 17.2 4 16 4c-2 0-3.6 1.6-3.6 3.6 0 .3 0 .6.1.9C9.6 8.3 7 6.9 5 4.9c-.4.7-.7 1.5-.7 2.4 0 1.6.8 3 2.1 3.8-.5 0-1-.1-1.5-.4v.1c0 2.2 1.6 4 3.7 4.4-.4.1-.9.2-1.3.2-.3 0-.6 0-.9-.1.6 2 2.3 3.4 4.4 3.5-1.6 1.3-3.7 2.1-5.9 2.1-.4 0-.8 0-1.2-.1 2 1.2 4.4 1.9 6.9 1.9 8.3 0 12.9-6.9 12.9-12.9v-.6c.9-.7 1.6-1.4 2.2-2.2-.8.3-1.7.6-2.6.7z" fill="currentColor"/></svg>
         </a>
       </div>
@@ -449,9 +446,9 @@
         </div>
 
         <!-- hero decorative neon glow -->
-        <div style="margin-top:18px;display:flex;gap:12px;justify-content:center;opacity:0.9">
-          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--grad1),transparent);box-shadow:0 12px 40px rgba(0,217,255,0.08)"></div>
-          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,transparent,var(--grad2));box-shadow:0 12px 40px rgba(139,92,246,0.06)"></div>
+        <div style="margin-top:18px;display:flex;gap:12px;justify-content:center;opacity:0.95">
+          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--grad1),transparent);box-shadow:0 12px 40px rgba(0,217,255,0.12)"></div>
+          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,transparent,var(--grad2));box-shadow:0 12px 40px rgba(139,92,246,0.08)"></div>
         </div>
       </div>
     </section>
@@ -462,9 +459,11 @@
       <p style="margin:6px 0 0 0;opacity:0.9">Play, compete, and earn — our catalog blends arcade thrills with blockchain play-to-earn mechanics.</p>
 
       <div class="games-grid" style="margin-top:14px;">
-        <!-- card template repeated for 7 games -->
+        <!-- CryptoMatch -->
         <article class="game-card" aria-label="CryptoMatch - Puzzle/Strategy">
-          <div class="game-emoji" aria-hidden="true">🧩</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/cryptomatch.png" alt="CryptoMatch">
+          </div>
           <div class="game-body">
             <h4>CryptoMatch</h4>
             <small>Puzzle / Strategy</small>
@@ -475,8 +474,11 @@
           </div>
         </article>
 
+        <!-- Crypto Bros 1 -->
         <article class="game-card" aria-label="Crypto Bros 1 - Action/Adventure">
-          <div class="game-emoji">🛡️</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/crypto-bros-1.png" alt="Crypto Bros 1">
+          </div>
           <div class="game-body">
             <h4>Crypto Bros 1</h4>
             <small>Action / Adventure</small>
@@ -487,8 +489,11 @@
           </div>
         </article>
 
+        <!-- Crypto Bros 2 -->
         <article class="game-card" aria-label="Crypto Bros 2 - Action/Adventure">
-          <div class="game-emoji">⚔️</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/crypto-bros-2.png" alt="Crypto Bros 2">
+          </div>
           <div class="game-body">
             <h4>Crypto Bros 2</h4>
             <small>Action / Adventure</small>
@@ -499,8 +504,11 @@
           </div>
         </article>
 
+        <!-- Slot Machine -->
         <article class="game-card" aria-label="Slot Machine - Casino/Arcade">
-          <div class="game-emoji">🎰</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/slot-machine.png" alt="Slot Machine">
+          </div>
           <div class="game-body">
             <h4>Slot Machine</h4>
             <small>Casino / Arcade</small>
@@ -511,8 +519,11 @@
           </div>
         </article>
 
+        <!-- Gold Rush Racer -->
         <article class="game-card" aria-label="Gold Rush Racer - Racing/Arcade">
-          <div class="game-emoji">🏁</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/gold-rush-logo.png" alt="Gold Rush Racer">
+          </div>
           <div class="game-body">
             <h4>Gold Rush Racer</h4>
             <small>Racing / Arcade</small>
@@ -523,8 +534,11 @@
           </div>
         </article>
 
+        <!-- Bullet Storm -->
         <article class="game-card" aria-label="Bullet Storm - Shooter/Action">
-          <div class="game-emoji">🔫</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/bullet-storm-logo.png" alt="Bullet Storm">
+          </div>
           <div class="game-body">
             <h4>Bullet Storm</h4>
             <small>Shooter / Action</small>
@@ -535,8 +549,11 @@
           </div>
         </article>
 
+        <!-- Yolo Drift (placeholder) -->
         <article class="game-card" aria-label="Yolo Drift - Racing/Arcade">
-          <div class="game-emoji">🚗</div>
+          <div class="game-img-wrap" aria-hidden="true">
+            <img src="images/yolo-drift.jpg" alt="Yolo Drift">
+          </div>
           <div class="game-body">
             <h4>Yolo Drift</h4>
             <small>Racing / Arcade</small>
@@ -831,20 +848,20 @@
   <div id="toast" class="toast" role="status" aria-live="polite">Copied to clipboard</div>
 
   <script>
-    // Simple navigation helper: smooth scroll + active link update
+    /* ---------------------------
+       Navigation & basic helpers
+       --------------------------- */
     function navTo(e, id){
       if(e) e.preventDefault();
       const el = document.getElementById(id);
       if(el){
         el.scrollIntoView({behavior:'smooth',block:'start'});
-        // update active nav
         document.querySelectorAll('nav.primary a').forEach(a=>a.classList.remove('active'));
-        const link = Array.from(document.querySelectorAll('nav.primary a')).find(a=>a.getAttribute('href') === '#' + id);
+        const link = document.querySelector('nav.primary a[href="#'+id+'"]');
         if(link) link.classList.add('active');
       }
     }
 
-    // Copy contract address to clipboard with feedback
     const contract = '0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C';
     document.getElementById('contractAddress').textContent = contract;
     const toastEl = document.getElementById('toast');
@@ -863,7 +880,6 @@
           await navigator.clipboard.writeText(contract);
           showToast('Contract address copied');
         } else {
-          // fallback
           const ta = document.createElement('textarea');
           ta.value = contract;
           document.body.appendChild(ta);
@@ -878,23 +894,90 @@
     }
 
     function openExplorer(){
-      // Opens Etherscan by default
       const url = 'https://etherscan.io/address/' + contract;
       window.open(url, '_blank', 'noopener');
     }
 
-    // Placeholder handler for Yolo Drift (no external link yet)
     function showPlaceholder(e){
       if(e) e.preventDefault();
       showToast('Yolo Drift link coming soon');
     }
 
-    // keyboard accessibility: copy on ctrl+shift+c
-    window.addEventListener('keydown', (e)=>{
-      if(e.ctrlKey && e.shiftKey && e.code === 'KeyC') { copyContract(); }
-    });
+    /* ---------------------------
+       Particle dots background
+       Lightweight canvas particle system
+       --------------------------- */
+    (function initParticles(){
+      const canvas = document.getElementById('particles');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let W = canvas.width = innerWidth;
+      let H = canvas.height = innerHeight;
+      const particles = [];
+      const COUNT = Math.min(120, Math.floor((W * H) / 6000)); // scale with viewport
 
-    // Nav highlight on scroll - simple throttle
+      function rand(min, max){ return Math.random()*(max-min)+min; }
+
+      function create(){
+        for(let i=0;i<COUNT;i++){
+          particles.push({
+            x: rand(0, W),
+            y: rand(0, H),
+            r: rand(0.6, 2.4),
+            vx: rand(-0.2, 0.6),
+            vy: rand(-0.25, 0.25),
+            alpha: rand(0.06, 0.30),
+            hue: Math.random() > 0.5 ? 200 + rand(-30,30) : 270 + rand(-30,30)
+          });
+        }
+      }
+
+      function resize(){
+        W = canvas.width = innerWidth;
+        H = canvas.height = innerHeight;
+        particles.length = 0;
+        create();
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        for(const p of particles){
+          p.x += p.vx;
+          p.y += p.vy;
+          // wrap around
+          if(p.x > W + 20) p.x = -20;
+          if(p.x < -20) p.x = W + 20;
+          if(p.y > H + 20) p.y = -20;
+          if(p.y < -20) p.y = H + 20;
+
+          ctx.beginPath();
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*8);
+          // subtle cyan/purple blend
+          g.addColorStop(0, `hsla(${p.hue},100%,60%,${p.alpha*0.85})`);
+          g.addColorStop(0.7, `hsla(${(p.hue+60)%360},80%,50%,${p.alpha*0.28})`);
+          g.addColorStop(1, `rgba(10,12,14,0)`);
+          ctx.fillStyle = g;
+          ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      let animId = null;
+      function loop(){
+        draw();
+        animId = requestAnimationFrame(loop);
+      }
+
+      window.addEventListener('resize', ()=>{ resize(); });
+      create();
+      loop();
+      // cleanup on page unload
+      window.addEventListener('unload', ()=> cancelAnimationFrame(animId));
+    })();
+
+    /* ---------------------------
+       Nav highlight on scroll (throttled)
+       --------------------------- */
     const sections = Array.from(document.querySelectorAll('section[id]'));
     let lastActive = null;
     function onScroll(){
@@ -917,9 +1000,12 @@
       if(scT) return;
       scT = setTimeout(()=>{ onScroll(); scT = 0; }, 120);
     });
-
-    // initial active nav
     onScroll();
+
+    // keyboard accessibility: copy on ctrl+shift+c
+    window.addEventListener('keydown', (e)=>{
+      if(e.ctrlKey && e.shiftKey && e.code === 'KeyC') { copyContract(); }
+    });
   </script>
 </body>
 </html>
