@@ -1,459 +1,912 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BESA VENTURES - Gaming Platform</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BESA VENTURES 2.0 — Gaming Ecosystem</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+  <!-- Google Font (futuristic, modern) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        /* Diagonal Stripes Overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 50px,
-                rgba(0, 217, 255, 0.03) 50px,
-                rgba(0, 217, 255, 0.03) 100px
-            );
-            z-index: -1;
-            pointer-events: none;
-        }
+  <meta name="description" content="BESA VENTURES 2.0 — The Future of Blockchain Gaming Ecosystem" />
+  <style>
+    :root{
+      --bg-a: #07111a;
+      --grad1: #00d9ff;
+      --grad2: #8b5cf6;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.03);
+      --neon: rgba(0,217,255,0.12);
+      --accent: linear-gradient(135deg,var(--grad1),var(--grad2));
+      --card-shadow: 0 8px 30px rgba(139,92,246,0.12), inset 0 -3px 12px rgba(0,0,0,0.6);
+      --transition: 250ms cubic-bezier(.2,.9,.3,1);
+      color-scheme: dark;
+    }
 
-        /* Header */
-        header {
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 2px solid #8b5cf6;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
+    /* Mobile-first base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.08), transparent 8%),
+        radial-gradient(900px 500px at 90% 90%, rgba(0,217,255,0.06), transparent 8%),
+        linear-gradient(180deg, rgba(10,13,20,1) 0%, rgba(7,17,26,1) 100%);
+      color:#cfeffd;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
-        }
+    /* Diagonal stripe overlay for the entire site */
+    .stripe-overlay {
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image: repeating-linear-gradient(135deg,
+        rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
+        transparent 1px, transparent 18px);
+      mix-blend-mode:overlay;
+      z-index:1;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 32px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            letter-spacing: 2px;
-        }
+    /* Layout */
+    .wrap{max-width:1200px;margin:0 auto;padding:16px;position:relative;z-index:2}
+    header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 0;
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
 
-        .logo::before {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: -5px;
-            width: 5px;
-            height: 50px;
-            background: repeating-linear-gradient(
-                45deg,
-                #00d9ff,
-                #00d9ff 10px,
-                #8b5cf6 10px,
-                #8b5cf6 20px
-            );
-        }
+    /* Logo */
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo .mark{
+      width:56px;height:40px;position:relative;border-radius:8px;
+      background:linear-gradient(135deg,#00000022,rgba(255,255,255,0.02));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.7), inset 0 -2px 8px rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+    /* diagonal stripe inside logo mark (left accent) */
+    .logo .mark::before{
+      content:"";
+      position:absolute;
+      left:-18%;
+      top:-20%;
+      width:70%;
+      height:140%;
+      transform:rotate(-20deg);
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      box-shadow: 0 4px 18px rgba(0,217,255,0.06);
+      mix-blend-mode:screen;
+    }
+    .logo h1{font-family: 'Orbitron', sans-serif;font-weight:700;font-size:14px;margin:0;letter-spacing:0.6px;color:#e8fbff}
+    .logo p{margin:0;font-size:10px;color:#9edfff;opacity:0.85}
 
-        .social-links-header {
-            display: flex;
-            gap: 15px;
-        }
+    nav.primary{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex:1;
+      justify-content:center;
+    }
+    nav.primary a{
+      color:#bfeeff;
+      font-size:13px;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:8px;
+      transition:all var(--transition);
+      font-weight:600;
+      letter-spacing:0.6px;
+    }
+    nav.primary a:hover, nav.primary a.active{
+      background: linear-gradient(90deg, rgba(0,217,255,0.08), rgba(139,92,246,0.06));
+      box-shadow: 0 6px 20px rgba(139,92,246,0.06), 0 0 18px rgba(0,217,255,0.04);
+      transform:translateY(-3px);
+      color: #ffffff;
+    }
 
-        .social-links-header a {
-            background: rgba(139, 92, 246, 0.2);
-            color: #00d9ff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 500;
-        }
+    /* Socials */
+    .socials{display:flex;gap:8px;align-items:center}
+    .icon-btn{
+      display:inline-grid;place-items:center;
+      width:36px;height:36px;border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:all var(--transition);
+      text-decoration:none;color:var(--grad1);
+    }
+    .icon-btn:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(0,217,255,0.06), 0 0 28px rgba(139,92,246,0.04);
+      color:#ffffff;
+    }
 
-        .social-links-header a:hover {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            color: white;
-            transform: translateY(-2px);
-        }
+    /* hero */
+    .hero{
+      min-height:82vh;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:48px 12px;
+      position:relative;
+      margin-top:12px;
+    }
+    .hero .panel{
+      width:100%;
+      max-width:980px;
+      padding:28px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: var(--card-shadow);
+      border:1px solid rgba(255,255,255,0.03);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero .panel::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(135deg, rgba(0,217,255,0.02), rgba(139,92,246,0.02));
+      mix-blend-mode:overlay;
+      pointer-events:none;
+    }
 
-        nav {
-            display: flex;
-            gap: 30px;
-            padding: 15px 50px;
-            justify-content: center;
-        }
+    .hero h2{
+      font-family: 'Orbitron', sans-serif;
+      margin:0;
+      font-size:22px;
+      letter-spacing:1.6px;
+      color: #eaffff;
+      text-transform:uppercase;
+      text-shadow: 0 6px 22px rgba(0,217,255,0.08), 0 2px 8px rgba(139,92,246,0.06);
+    }
+    .hero p.lead{
+      margin:12px 0 18px 0;
+      font-size:16px;
+      color: #cfeffd;
+      opacity:0.95;
+    }
+    .cta{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:12px 18px;
+      border-radius:12px;
+      background: linear-gradient(90deg,var(--grad1),var(--grad2));
+      color:#001219;
+      font-weight:700;
+      font-family: 'Orbitron', sans-serif;
+      text-transform:uppercase;
+      cursor:pointer;
+      box-shadow: 0 12px 40px rgba(139,92,246,0.12), 0 6px 20px rgba(0,217,255,0.07);
+      border: none;
+      transition: transform 220ms ease, filter 220ms;
+    }
+    .cta:hover{ transform: translateY(-6px) scale(1.02); filter:brightness(1.04) }
 
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 25px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            position: relative;
-            font-size: 15px;
-            letter-spacing: 1px;
-        }
+    /* games grid */
+    .section{
+      margin:36px 0;
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .section h3{font-family:'Orbitron',sans-serif;margin:0 0 8px 0;font-size:16px;letter-spacing:0.8px;color:#e7fbff}
 
-        nav a:hover {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
-            transform: translateY(-2px);
-        }
+    .games-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .game-card{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      transition:transform var(--transition), box-shadow var(--transition);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .game-card:hover{
+      transform:translateY(-8px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.7), 0 0 30px rgba(0,217,255,0.06);
+    }
+    .game-emoji{
+      min-width:72px;width:72px;height:72px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;font-size:30px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: inset 0 -6px 14px rgba(0,0,0,0.6);
+      font-size:28px;
+    }
+    .game-body{flex:1}
+    .game-body h4{margin:0;font-family:'Orbitron',sans-serif;font-size:15px}
+    .game-body small{display:block;color:#9edfff;margin-top:4px;font-size:12px}
+    .game-body p{margin:8px 0 0 0;color:#cfeffd;font-size:13px;line-height:1.35}
+    .game-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .btn-play{
+      padding:10px 14px;border-radius:10px;border:none;
+      background:transparent;color:var(--grad1);font-weight:700;
+      cursor:pointer;transition:all var(--transition);
+      border:1px solid rgba(0,217,255,0.12);
+    }
+    .btn-play:hover{
+      background: linear-gradient(90deg,var(--grad1),var(--grad2));
+      color:#001219;
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 12px 30px rgba(0,217,255,0.06);
+    }
 
-        /* Hero Section */
-        .hero {
-            height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        }
+    /* utilities: token card */
+    .utilities-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .token-card{
+      padding:14px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.18), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:12px;
+    }
+    .token-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .token-address{
+      font-family:monospace;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;gap:8px;align-items:center;
+      overflow:auto;
+    }
+    .copy-btn{
+      padding:8px 10px;border-radius:10px;border:none;background:transparent;color:var(--grad2);
+      cursor:pointer;font-weight:700;transition:all var(--transition);
+    }
+    .copy-btn:hover{transform:translateY(-4px);filter:brightness(1.06)}
 
-        .hero-content h1 {
-            font-size: 72px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6, #00d9ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 3s ease-in-out infinite;
-        }
+    /* small toast */
+    .toast{
+      position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--grad1),var(--grad2));
+      color:#001219;padding:10px 14px;border-radius:12px;font-weight:700;box-shadow:0 18px 50px rgba(139,92,246,0.16);
+      transform:translateY(18px) scale(0.98);opacity:0;pointer-events:none;transition:all 260ms ease;
+      z-index:80;
+    }
+    .toast.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
 
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 30px rgba(0, 217, 255, 0.8); }
-            50% { text-shadow: 0 0 50px rgba(139, 92, 246, 0.8); }
-        }
+    /* humanitarian + donation */
+    .mission-grid{
+      display:grid;gap:12px;
+    }
+    .donation-box{
+      padding:14px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(0,217,255,0.02), rgba(139,92,246,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:12px;
+      align-items:flex-start;
+    }
+    .wallet{
+      font-family:monospace;padding:10px;border-radius:10px;background:rgba(0,0,0,0.18);
+      width:100%;display:flex;justify-content:space-between;align-items:center;
+      border:1px dashed rgba(255,255,255,0.03);
+    }
+    .donate-btn{
+      padding:12px 16px;border-radius:12px;border:none;cursor:pointer;
+      background:transparent;color:var(--grad1);font-weight:700;
+      border:1px solid rgba(0,217,255,0.08);
+    }
+    .donate-btn:hover{
+      background: linear-gradient(90deg,var(--grad1),var(--grad2));
+      color:#001219;transform:translateY(-4px);
+    }
 
-        .hero-content p {
-            font-size: 28px;
-            margin-bottom: 40px;
-            color: #00d9ff;
-            font-weight: 300;
-        }
+    /* ecosystem cards */
+    .ecos-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    .ecos-card{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:space-between}
+    .tag-coming{padding:6px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
 
-        .cta-button {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            color: white;
-            padding: 18px 50px;
-            border: none;
-            border-radius: 50px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+    /* tokenomics */
+    .tokenomics-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    .supply{
+      font-family:'Orbitron',sans-serif;font-size:22px;margin:0;color:#eaffff;
+    }
+    .dist-list{display:flex;flex-direction:column;gap:8px}
+    .dist-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .bar{
+      height:10px;border-radius:8px;background:linear-gradient(90deg,var(--grad1),var(--grad2));box-shadow:0 6px 18px rgba(139,92,246,0.08);
+    }
 
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(0, 217, 255, 0.8);
-        }
+    /* roadmap */
+    .timeline{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .phase{
+      display:flex;gap:12px;align-items:flex-start;
+      padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)
+    }
+    .phase .dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(90deg,var(--grad1),var(--grad2));box-shadow:0 6px 20px rgba(0,217,255,0.06)}
+    .phase .meta{font-size:13px}
 
-        /* Section Styling */
-        section {
-            padding: 100px 50px;
-        }
+    footer{
+      margin-top:28px;padding:18px 0;color:#9edfff;opacity:0.95;border-top:1px solid rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;gap:12px;
+    }
+    footer .row{display:flex;flex-direction:column;gap:8px}
+    footer .bottom{display:flex;flex-direction:column;gap:12px;align-items:center}
 
-        .section-title {
-            text-align: center;
-            font-size: 48px;
-            margin-bottom: 60px;
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
+    /* responsiveness */
+    @media(min-width:700px){
+      .games-grid{grid-template-columns:repeat(2,1fr)}
+      .ecos-grid{grid-template-columns:repeat(2,1fr)}
+      .utilities-grid{grid-template-columns:repeat(2,1fr)}
+      header{padding:18px 0}
+      .hero h2{font-size:28px}
+    }
+    @media(min-width:1000px){
+      .wrap{padding:24px}
+      .games-grid{grid-template-columns:repeat(3,1fr)}
+      nav.primary{justify-content:flex-start}
+      .logo h1{font-size:16px}
+      header{gap:20px}
+      .hero{min-height:86vh}
+      .hero h2{font-size:34px}
+      .hero p.lead{font-size:18px}
+      .token-row{flex-wrap:nowrap}
+    }
 
-        /* Games Section */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .game-card {
-            background: rgba(20, 20, 30, 0.6);
-            border: 2px solid #8b5cf6;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
-            border-color: #00d9ff;
-        }
-
-        .game-image-placeholder {
-            width: 100%;
-            height: 220px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            border-bottom: 2px solid #8b5cf6;
-        }
-
-        .game-content {
-            padding: 25px;
-        }
-
-        .game-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #00d9ff;
-            font-weight: bold;
-        }
-
-        .game-genre {
-            color: #8b5cf6;
-            font-size: 15px;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .game-description {
-            color: #cccccc;
-            margin-bottom: 25px;
-            line-height: 1.8;
-            font-size: 15px;
-        }
-
-        .play-button {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .play-button:hover {
-            box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
-            transform: scale(1.02);
-        }
-
-        /* About Section */
-        .about-section {
-            background: rgba(139, 92, 246, 0.05);
-        }
-
-        .about-content {
-            max-width: 900px;
-            margin: 0 auto;
-            line-height: 2;
-            font-size: 19px;
-            text-align: center;
-            color: #e0e0e0;
-        }
-
-        /* Utilities Section */
-        .utilities-section {
-            background: rgba(0, 217, 255, 0.05);
-        }
-
-        .utilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .utility-card {
-            background: rgba(20, 20, 30, 0.6);
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px solid #00d9ff;
-        }
-
-        .utility-card h3 {
-            color: #00d9ff;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .utility-card p {
-            color: #cccccc;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .token-address {
-            background: rgba(0, 217, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            word-break: break-all;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn {
-            background: linear-gradient(90deg, #00d9ff, #8b5cf6);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .copy-btn:hover {
-            opacity: 0.8;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(10, 10, 15, 0.95);
-            padding: 60px 50px 30px;
-            border-top: 2px solid #8b5cf6;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 50px;
-            margin-bottom: 30px;
-        }
-
-        .footer-section h3 {
-            color: #00d9ff;
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
-
-        .footer-section p, .footer-section a {
-            color: #cccccc;
-            line-height: 2;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .footer-section a:hover {
-            color: #00d9ff;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(139, 92, 246, 0.3);
-            color: #888;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-top {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                padding: 15px 20px;
-            }
-
-            .hero-content h1 {
-                font-size: 42px;
-            }
-
-            .games-grid,
-            .utilities-grid {
-                grid-template-columns: 1fr;
-            }
-
-            section {
-                padding: 60px 20px;
-            }
-        }
-    </style>
+    /* little polish for accessibility focus */
+    a:focus, button:focus {outline:2px solid rgba(0,217,255,0.12);outline-offset:2px}
+  </style>
 </head>
 <body>
-    <header>
-        <div class="header-top">
-            <div class="logo">BESA VENTURES</div>
-            <div class="social-links-header">
-                <a href="#" target="_blank">Twitter</a>
-                <a href="#" target="_blank">Discord</a>
-                <a href="#" target="_blank">Telegram</a>
-            </div>
+  <div class="stripe-overlay" aria-hidden="true"></div>
+
+  <div class="wrap" id="top">
+    <header role="banner" aria-label="Main header">
+      <a class="logo" href="#home" onclick="navTo(event,'home')">
+        <div class="mark" aria-hidden="true">
+          <!-- small diagonal accent in the mark -->
+          <svg width="42" height="28" viewBox="0 0 42 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:translateX(-2px)">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#00d9ff"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <rect width="42" height="28" rx="6" fill="#041018"></rect>
+            <path d="M-6 34L26 -10L36 -10L4 34Z" fill="url(#g1)" opacity="0.95"/>
+          </svg>
         </div>
-        <nav>
-            <a href="#home">HOME</a>
-            <a href="#games">GAMES</a>
-            <a href="#about">ABOUT</a>
-            <a href="#utilities">UTILITIES</a>
-            <a href="#tokenomics">TOKENOMICS</a>
-            <a href="#roadmap">ROADMAP</a>
-        </nav>
+        <div>
+          <h1>BESA VENTURES</h1>
+          <p>Gaming Ecosystem</p>
+        </div>
+      </a>
+
+      <nav class="primary" role="navigation" aria-label="Primary">
+        <a href="#home" onclick="navTo(event,'home')" class="active">HOME</a>
+        <a href="#games" onclick="navTo(event,'games')">GAMES</a>
+        <a href="#about" onclick="navTo(event,'about')">ABOUT</a>
+        <a href="#utilities" onclick="navTo(event,'utilities')">UTILITIES</a>
+        <a href="#ecosystem" onclick="navTo(event,'ecosystem')">ECOSYSTEM</a>
+        <a href="#mission" onclick="navTo(event,'mission')">MISSION</a>
+        <a href="#tokenomics" onclick="navTo(event,'tokenomics')">TOKENOMICS</a>
+        <a href="#roadmap" onclick="navTo(event,'roadmap')">ROADMAP</a>
+      </nav>
+
+      <div class="socials" aria-hidden="false">
+        <a class="icon-btn" href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 5.8c-.6.3-1.3.5-2 .6.7-.4 1.2-1.1 1.5-1.9-.7.4-1.5.7-2.4.9C18.4 4.4 17.2 4 16 4c-2 0-3.6 1.6-3.6 3.6 0 .3 0 .6.1.9C9.6 8.3 7 6.9 5 4.9c-.4.7-.7 1.5-.7 2.4 0 1.6.8 3 2.1 3.8-.5 0-1-.1-1.5-.4v.1c0 2.2 1.6 4 3.7 4.4-.4.1-.9.2-1.3.2-.3 0-.6 0-.9-.1.6 2 2.3 3.4 4.4 3.5-1.6 1.3-3.7 2.1-5.9 2.1-.4 0-.8 0-1.2-.1 2 1.2 4.4 1.9 6.9 1.9 8.3 0 12.9-6.9 12.9-12.9v-.6c.9-.7 1.6-1.4 2.2-2.2-.8.3-1.7.6-2.6.7z" fill="currentColor"/></svg>
+        </a>
+        <a class="icon-btn" href="https://discord.com" target="_blank" rel="noopener" aria-label="Discord">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.1 11.3.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.8 1.6-.8.9-1.6 2.4-1.1 3-.9.1-.7.4-1.1.7-1.4-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.5 1.2-3.4-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.8 11.8 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2.6 1.7.2 3 .1 3.3.7.9 1.2 2.1 1.2 3.4 0 4.6-2.7 5.5-5.3 5.9.4.3.7.9.7 1.8v2.7c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg>
+        </a>
+        <a class="icon-btn" href="https://t.me" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 4.5L2 11.2c-.6.2-.6.6-.1.8l5 1.6 2.3 7.1c.4 1.2 1.1 1.5 2.1.9L22 13.2c.7-.4.7-1.1.1-1.6L7 3.5c-.7-.4-1.4-.1-1 .9L8 10l11-5.5c.7-.3 1.2-.2 1.2-.0z" fill="currentColor"/></svg>
+        </a>
+      </div>
     </header>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>WELCOME TO BESA VENTURES</h1>
-            <p>The Future of Blockchain Gaming</p>
-            <button class="cta-button">START PLAYING</button>
+    <!-- HERO -->
+    <section id="home" class="hero" aria-label="Hero section">
+      <div class="panel">
+        <h2>WELCOME TO BESA VENTURES 2.0</h2>
+        <p class="lead">The Future of Blockchain Gaming Ecosystem</p>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap">
+          <button class="cta" onclick="navTo(null,'ecosystem')">EXPLORE ECOSYSTEM</button>
+          <a class="cta" style="background:transparent;color:#bfeeff;border:1px solid rgba(255,255,255,0.04)" href="#games" onclick="navTo(event,'games')">VIEW GAMES</a>
         </div>
+
+        <!-- hero decorative neon glow -->
+        <div style="margin-top:18px;display:flex;gap:12px;justify-content:center;opacity:0.9">
+          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--grad1),transparent);box-shadow:0 12px 40px rgba(0,217,255,0.08)"></div>
+          <div style="width:68px;height:8px;border-radius:999px;background:linear-gradient(90deg,transparent,var(--grad2));box-shadow:0 12px 40px rgba(139,92,246,0.06)"></div>
+        </div>
+      </div>
     </section>
 
-    <section id="games">
-        <h2 class="section-title">OUR GAMES</h2>
-        <div class="games-grid">
-            <div class="game-card">
-                <div class="game-image-placeholder">🏃</div>
-                <div class="game-content">
-                    <h3 class="game-title">Kali's Run</h3>
-                    <p class="game-genre">Action • Adventure</p>
+    <!-- GAMES -->
+    <section id="games" class="section" aria-labelledby="games-title">
+      <h3 id="games-title">GAMES</h3>
+      <p style="margin:6px 0 0 0;opacity:0.9">Play, compete, and earn — our catalog blends arcade thrills with blockchain play-to-earn mechanics.</p>
+
+      <div class="games-grid" style="margin-top:14px;">
+        <!-- card template repeated for 7 games -->
+        <article class="game-card" aria-label="CryptoMatch - Puzzle/Strategy">
+          <div class="game-emoji" aria-hidden="true">🧩</div>
+          <div class="game-body">
+            <h4>CryptoMatch</h4>
+            <small>Puzzle / Strategy</small>
+            <p>Match tokens, solve puzzles, and outsmart opponents. Strategic play rewards token payouts and rare NFT drops.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('CryptoMatch')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Crypto Bros 1 - Action/Adventure">
+          <div class="game-emoji">🛡️</div>
+          <div class="game-body">
+            <h4>Crypto Bros 1</h4>
+            <small>Action / Adventure</small>
+            <p>Classic side-scrolling action with tokenized gear, PvE missions, and cooperative raids for rewards.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Crypto Bros 1')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Crypto Bros 2 - Action/Adventure">
+          <div class="game-emoji">⚔️</div>
+          <div class="game-body">
+            <h4>Crypto Bros 2</h4>
+            <small>Action / Adventure</small>
+            <p>Expanded world, cross-chain leaderboards, and guild-driven economy — bigger battles, bigger rewards.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Crypto Bros 2')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Slot Machine - Casino/Arcade">
+          <div class="game-emoji">🎰</div>
+          <div class="game-body">
+            <h4>Slot Machine</h4>
+            <small>Casino / Arcade</small>
+            <p>Fast-play casino slots with provably-fair mechanics and token jackpots backed by the ecosystem pool.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Slot Machine')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Gold Rush Racer - Racing/Arcade">
+          <div class="game-emoji">🏁</div>
+          <div class="game-body">
+            <h4>Gold Rush Racer</h4>
+            <small>Racing / Arcade</small>
+            <p>High-speed token races with NFT vehicle upgrades, seasonal championships and leaderboard rewards.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Gold Rush Racer')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Bullet Storm - Shooter/Action">
+          <div class="game-emoji">🔫</div>
+          <div class="game-body">
+            <h4>Bullet Storm</h4>
+            <small>Shooter / Action</small>
+            <p>Fast-paced arenas with cosmetic NFTs, ranked matches and tokenized battle passes for earners.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Bullet Storm')">PLAY NOW</button>
+          </div>
+        </article>
+
+        <article class="game-card" aria-label="Yolo Drift - Racing/Arcade">
+          <div class="game-emoji">🚗</div>
+          <div class="game-body">
+            <h4>Yolo Drift</h4>
+            <small>Racing / Arcade</small>
+            <p>Drift-focused street racing with collectible car NFTs and community-run tournaments for prizes.</p>
+          </div>
+          <div class="game-actions">
+            <button class="btn-play" onclick="playNow('Yolo Drift')">PLAY NOW</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h3 id="about-title">ABOUT BESA VENTURES</h3>
+      <p style="margin-top:6px;">BESA VENTURES 2.0 is a next-generation gaming ecosystem that fuses engaging gameplay with blockchain-powered ownership and play-to-earn economics. We build games that are fair, fun, and financially rewarding — while driving mainstream adoption of tokenized assets.</p>
+
+      <div style="display:grid;gap:12px;margin-top:14px">
+        <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)">
+          <h4 style="margin:0 0 6px 0;font-family:'Orbitron',sans-serif">Our Mission</h4>
+          <p style="margin:0">To revolutionize gaming by combining competitive play, player ownership, and sustainable token economies that reward skill and community participation.</p>
+        </div>
+
+        <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)">
+          <h4 style="margin:0 0 6px 0;font-family:'Orbitron',sans-serif">Play-to-Earn Benefits</h4>
+          <ul style="margin:0 0 0 18px;padding:6px 0 0 0;line-height:1.45">
+            <li>Earn tokens and NFTs while you play</li>
+            <li>Trade or sell assets on integrated marketplaces</li>
+            <li>Seasonal rewards, tournaments and leaderboard incentives</li>
+            <li>Governance and staking for dedicated players</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- UTILITIES -->
+    <section id="utilities" class="section" aria-labelledby="utilities-title">
+      <h3 id="utilities-title">UTILITIES</h3>
+      <p style="margin-top:6px;">Core tools and utilities that power our ecosystem: token, contract, marketplace integrations and merchant tooling.</p>
+
+      <div class="utilities-grid">
+        <div class="token-card" role="region" aria-label="Token information">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h4 style="margin:0;font-family:'Orbitron',sans-serif">BESA Token — $BESA</h4>
+              <p style="margin:6px 0 0 0;font-size:13px;color:#bfeeff">Utility token for governance, staking, rewards and marketplace purchases.</p>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:12px;color:#9edfff">Total Supply</div>
+              <div class="supply">1,000,000,000</div>
+            </div>
+          </div>
+
+          <div class="token-row" style="margin-top:8px">
+            <div class="token-address" id="contractAddress">
+              0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C
+            </div>
+            <button class="copy-btn" id="copyBtn" onclick="copyContract()">COPY</button>
+            <button class="copy-btn" style="color:var(--grad2)" onclick="openExplorer()">VIEW</button>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+            <div style="padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)">
+              <strong>Staking</strong>
+              <div style="font-size:12px;color:#9edfff">Lock $BESA to earn rewards</div>
+            </div>
+            <div style="padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)">
+              <strong>Governance</strong>
+              <div style="font-size:12px;color:#9edfff">Vote on proposals & initiatives</div>
+            </div>
+            <div style="padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)">
+              <strong>Marketplace</strong>
+              <div style="font-size:12px;color:#9edfff">Buy/sell game assets & NFTs</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)">
+          <h4 style="margin:0 0 6px 0;font-family:'Orbitron',sans-serif">Utility Features</h4>
+          <ul style="margin:0 0 0 18px;line-height:1.45">
+            <li>Cross-game wallets and asset bridging</li>
+            <li>Developer SDK & web3 integrations</li>
+            <li>Marketplace & auction house</li>
+            <li>In-game governance and reward modules</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- HUMANITARIAN MISSION -->
+    <section id="mission" class="section" aria-labelledby="mission-title">
+      <h3 id="mission-title">HUMANITARIAN MISSION: MISSING PERSONS SUPPORT</h3>
+      <p style="margin-top:6px;">BESA VENTURES leverages the blockchain to fund and support humanitarian initiatives focused on missing persons and family reunification. Through NFT drops, donation drives, and charity auctions, a portion of ecosystem proceeds goes directly to vetted organizations facilitating searches, awareness campaigns, and victim support.</p>
+
+      <div class="mission-grid" style="margin-top:12px">
+        <div style="display:flex;gap:12px;flex-direction:column">
+          <div style="padding:12px;border-radius:12px;background:linear-gradient(135deg, rgba(0,0,0,0.12), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)">
+            <h4 style="margin:0 0 6px 0">How crypto & NFTs help</h4>
+            <ul style="margin:0 0 0 18px">
+              <li>Transparent funds: on-chain allocations ensure traceability</li>
+              <li>Targeted campaigns: NFT sales and charity auctions fund specific cases</li>
+              <li>Community awareness: players amplify missing persons cases through in-game events</li>
+            </ul>
+          </div>
+
+          <div class="donation-box">
+            <h4 style="margin:0">Donation Call-to-Action</h4>
+            <p style="margin:0">Support search and family reunification efforts. Donations are audited and a public ledger of allocations is published quarterly.</p>
+            <div class="wallet" aria-label="Donation wallet">
+              <div style="max-width:70%;overflow:auto">0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C</div>
+              <div style="display:flex;gap:8px">
+                <button class="copy-btn" onclick="copyContract()">Copy</button>
+                <button class="donate-btn" onclick="openExplorer()">Donate (Explorer)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DONATION SECTION -->
+    <section id="donate" class="section" aria-labelledby="donate-title">
+      <h3 id="donate-title">DONATIONS</h3>
+      <div style="display:grid;gap:12px;margin-top:12px">
+        <div class="donation-box">
+          <h4 style="margin:0">Crypto Donation</h4>
+          <p style="margin:0">Send contributions directly to the donation wallet. All donations are allocated to verified partners and published in our impact reports.</p>
+          <div class="wallet" style="margin-top:8px">
+            <div style="font-family:monospace">0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C</div>
+            <div style="display:flex;gap:8px">
+              <button class="copy-btn" onclick="copyContract()">COPY</button>
+              <button class="donate-btn" onclick="openExplorer()">Open in Explorer</button>
+            </div>
+          </div>
+          <p style="margin:6px 0 0 0;font-size:13px;color:#9edfff">Impact: Funds support search operations, community awareness, and legal support for families.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ECOSYSTEM -->
+    <section id="ecosystem" class="section" aria-labelledby="ecosystem-title">
+      <h3 id="ecosystem-title">ECOSYSTEM</h3>
+      <p style="margin-top:6px">A connected suite of platforms — upcoming releases will expand BESA's functionality across DeFi, NFTs, casino and commerce.</p>
+
+      <div class="ecos-grid">
+        <div class="ecos-card">
+          <div>
+            <strong>Besa Swap</strong>
+            <div style="font-size:13px;color:#9edfff">Decentralized Exchange — Liquidity, swaps and pools.</div>
+          </div>
+          <div class="tag-coming">Coming Soon</div>
+        </div>
+
+        <div class="ecos-card">
+          <div>
+            <strong>NFT Marketplace</strong>
+            <div style="font-size:13px;color:#9edfff">Trade in-game assets and collectible drops.</div>
+          </div>
+          <div class="tag-coming">Coming Soon</div>
+        </div>
+
+        <div class="ecos-card">
+          <div>
+            <strong>LuckyWave Casino</strong>
+            <div style="font-size:13px;color:#9edfff">Provably-fair casino and tournament platform.</div>
+          </div>
+          <div class="tag-coming">Coming Soon</div>
+        </div>
+
+        <div class="ecos-card">
+          <div>
+            <strong>Tono Store (Merch)</strong>
+            <div style="font-size:13px;color:#9edfff">Official merch and limited drops.</div>
+          </div>
+          <div class="tag-coming">Coming Soon</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section id="tokenomics" class="section" aria-labelledby="tokenomics-title">
+      <h3 id="tokenomics-title">TOKENOMICS</h3>
+      <p style="margin-top:6px">Transparent allocation ensures longevity and community incentives.</p>
+
+      <div class="tokenomics-grid">
+        <div style="display:grid;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h4 style="margin:0;font-family:'Orbitron',sans-serif">Total Supply</h4>
+              <div style="font-size:13px;color:#9edfff">1,000,000,000 $BESA</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700;font-size:14px;color:#eaffff">Circulating: 420,000,000</div>
+              <div style="font-size:12px;color:#9edfff">Locked / Treasury: 580,000,000</div>
+            </div>
+          </div>
+
+          <div class="dist-list" aria-hidden="false">
+            <div class="dist-item"><div>Public Sale</div><div style="display:flex;gap:12px;align-items:center"><div style="width:140px;background:#0b1114;border-radius:8px;padding:4px"><div class="bar" style="width:15%"></div></div><div>15%</div></div></div>
+            <div class="dist-item"><div>Team & Advisors (vested)</div><div style="display:flex;gap:12px;align-items:center"><div style="width:140px;background:#0b1114;border-radius:8px;padding:4px"><div class="bar" style="width:12%"></div></div><div>12%</div></div></div>
+            <div class="dist-item"><div>Staking & Rewards</div><div style="display:flex;gap:12px;align-items:center"><div style="width:140px;background:#0b1114;border-radius:8px;padding:4px"><div class="bar" style="width:25%"></div></div><div>25%</div></div></div>
+            <div class="dist-item"><div>Ecosystem Fund</div><div style="display:flex;gap:12px;align-items:center"><div style="width:140px;background:#0b1114;border-radius:8px;padding:4px"><div class="bar" style="width:30%"></div></div><div>30%</div></div></div>
+            <div class="dist-item"><div>Charity & Grants</div><div style="display:flex;gap:12px;align-items:center"><div style="width:140px;background:#0b1114;border-radius:8px;padding:4px"><div class="bar" style="width:8%"></div></div><div>8%</div></div></div>
+          </div>
+
+          <div style="padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)">
+            <strong>Benefits</strong>
+            <ul style="margin:6px 0 0 18px">
+              <li>Staking rewards and seasonal incentives</li>
+              <li>Governance on ecosystem upgrades</li>
+              <li>Discounts on marketplace fees</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="section" aria-labelledby="roadmap-title">
+      <h3 id="roadmap-title">ROADMAP (Q1 - Q4 2025)</h3>
+      <p style="margin-top:6px">Planned milestones to build, launch, and scale the BESA ecosystem throughout 2025.</p>
+
+      <div class="timeline" role="list">
+        <div class="phase" role="listitem">
+          <div class="dot" aria-hidden="true"></div>
+          <div class="meta">
+            <strong>Q1 2025 — Foundation</strong>
+            <div style="font-size:13px;color:#9edfff">Whitepaper, token contract deployment, website v1, initial private seed round.</div>
+          </div>
+        </div>
+
+        <div class="phase" role="listitem">
+          <div class="dot"></div>
+          <div class="meta">
+            <strong>Q2 2025 — Alpha & Integrations</strong>
+            <div style="font-size:13px;color:#9edfff">Alpha game launches, staking v1, marketplace prototype, charity NFT drop.</div>
+          </div>
+        </div>
+
+        <div class="phase" role="listitem">
+          <div class="dot"></div>
+          <div class="meta">
+            <strong>Q3 2025 — Beta & Growth</strong>
+            <div style="font-size:13px;color:#9edfff">Open beta, tournaments, DEX integration (Besa Swap), user acquisition push.</div>
+          </div>
+        </div>
+
+        <div class="phase" role="listitem">
+          <div class="dot"></div>
+          <div class="meta">
+            <strong>Q4 2025 — Mainnet & Scale</strong>
+            <div style="font-size:13px;color:#9edfff">Mainnet features, NFT marketplace launch, iOS/Android wrappers, governance rollout.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="row">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <strong>BESA VENTURES</strong>
+            <div style="font-size:13px;color:#9edfff">Innovating gaming, tokenizing fun.</div>
+          </div>
+
+          <div style="text-align:right">
+            <div style="font-size:13px">Contact: <a href="mailto:gabriel@besagaming.com" style="color:#bfeeff">gabriel@besagaming.com</a></div>
+            <div style="font-size:13px;margin-top:6px">Contract: <span style="font-family:monospace">0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div style="display:flex;gap:8px">
+          <a class="icon-btn" href="#" aria-label="Twitter footer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 5.8c-.6.3-1.3.5-2 .6.7-.4 1.2-1.1 1.5-1.9-.7.4-1.5.7-2.4.9C18.4 4.4 17.2 4 16 4c-2 0-3.6 1.6-3.6 3.6 0 .3 0 .6.1.9C9.6 8.3 7 6.9 5 4.9c-.4.7-.7 1.5-.7 2.4 0 1.6.8 3 2.1 3.8-.5 0-1-.1-1.5-.4v.1c0 2.2 1.6 4 3.7 4.4-.4.1-.9.2-1.3.2-.3 0-.6 0-.9-.1.6 2 2.3 3.4 4.4 3.5-1.6 1.3-3.7 2.1-5.9 2.1-.4 0-.8 0-1.2-.1 2 1.2 4.4 1.9 6.9 1.9 8.3 0 12.9-6.9 12.9-12.9v-.6c.9-.7 1.6-1.4 2.2-2.2-.8.3-1.7.6-2.6.7z" fill="currentColor"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="Discord footer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.1 11.3.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.8 1.6-.8.9-1.6 2.4-1.1 3-.9.1-.7.4-1.1.7-1.4-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.5 1.2-3.4-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.8 11.8 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2.6 1.7.2 3 .1 3.3.7.9 1.2 2.1 1.2 3.4 0 4.6-2.7 5.5-5.3 5.9.4.3.7.9.7 1.8v2.7c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg></a>
+        </div>
+
+        <div style="font-size:13px;color:#9edfff">© <span id="year"></span> BESA VENTURES. All rights reserved.</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">Copied to clipboard</div>
+
+  <script>
+    // Simple navigation helper: smooth scroll + active link update
+    function navTo(e, id){
+      if(e) e.preventDefault();
+      const el = document.getElementById(id);
+      if(el){
+        el.scrollIntoView({behavior:'smooth',block:'start'});
+        // update active nav
+        document.querySelectorAll('nav.primary a').forEach(a=>a.classList.remove('active'));
+        const link = Array.from(document.querySelectorAll('nav.primary a')).find(a=>a.getAttribute('href') === '#' + id);
+        if(link) link.classList.add('active');
+      }
+    }
+
+    // Copy contract address to clipboard with feedback
+    const contract = '0xDE1c2EdF7E6bFA0FEFb161487A8F994Cb42aE40C';
+    document.getElementById('contractAddress').textContent = contract;
+    const toastEl = document.getElementById('toast');
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    function showToast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(()=>toastEl.classList.remove('show'), 2200);
+    }
+
+    async function copyContract(){
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText(contract);
+          showToast('Contract address copied');
+        } else {
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = contract;
+          document.body.appendChild(ta);
+          ta.select();
+          try{ document.execCommand('copy'); showToast('Contract address copied'); } catch(e){ showToast('Copy failed') }
+          ta.remove();
+        }
+      }catch(err){
+        console.error(err);
+        showToast('Copy failed');
+      }
+    }
+
+    function openExplorer(){
+      // Safety: opens a common Etherscan URL; if you use other chain explorers, adjust accordingly.
+      // NOTE: this is safe — user runs in their browser.
+      const url = 'https://etherscan.io/address/' + contract;
+      window.open(url, '_blank', 'noopener');
+    }
+
+    // Simulated Play Now handler - opens a lightweight overlay or at least informs the user
+    function playNow(game){
+      // In production you'd route to the game page / app. Here we show a toast and open a placeholder.
+      showToast('Launching ' + game + ' (demo)');
+      // Optionally open a new window to a placeholder (commented out).
+      // window.open('https://example.com/'+encodeURIComponent(game),'_blank');
+    }
+
+    // keyboard accessibility: copy on ctrl+shift+c
+    window.addEventListener('keydown', (e)=>{
+      if(e.ctrlKey && e.shiftKey && e.code === 'KeyC') { copyContract(); }
+    });
+
+    // Nav highlight on scroll - simple throttle
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    let lastActive = null;
+    function onScroll(){
+      const mid = window.scrollY + window.innerHeight/3;
+      let found = null;
+      for(const s of sections){
+        const top = s.offsetTop;
+        const bottom = top + s.offsetHeight;
+        if(mid >= top && mid < bottom){ found = s.id; break; }
+      }
+      if(found && found !== lastActive){
+        lastActive = found;
+        document.querySelectorAll('nav.primary a').forEach(a=>a.classList.remove('active'));
+        const link = document.querySelector('nav.primary a[href="#'+found+'"]');
+        if(link) link.classList.add('active');
+      }
+    }
+    let scT = 0;
+    window.addEventListener('scroll', ()=>{
+      if(scT) return;
+      scT = setTimeout(()=>{ onScroll(); scT = 0; }, 120);
+    });
+
+    // initial active nav
+    onScroll();
+  </script>
+</body>
+</html>
+
